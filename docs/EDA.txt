@@ -1,0 +1,10 @@
+Para realizar el análisis exploratorio dividimos las features entre los integrantes:
+
+Maia:
+	Age, Gender, Height, Weight, BMI
+
+Javier:
+	Tabaco, Alcoholismo, Actividad, Cardio
+
+Gonzalo:
+	TA, Col, Gluc 
