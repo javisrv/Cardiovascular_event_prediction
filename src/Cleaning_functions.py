@@ -1,11 +1,12 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# In[17]:
+# In[1]:
 
 
 import pandas as pd
 import numpy as np
+import random as rd
 
 
 # # Cleaning functions
@@ -14,7 +15,7 @@ import numpy as np
 
 # ### 1.1 Gender
 
-# In[18]:
+# In[2]:
 
 
 def correct_gender(dataframe):
@@ -37,7 +38,7 @@ def correct_gender(dataframe):
 
 # ### 1.2 Cholesterol, Gluc, Smoke, Alco, Active
 
-# In[19]:
+# In[3]:
 
 
 # Funcion que convierte el valor de las variables categoricas en categorias
@@ -69,7 +70,7 @@ def correct_categorical(dataframe):
 
 # ### 2.1 Blood pressure cleaning function
 
-# In[20]:
+# In[4]:
 
 
 def systolic(dataframe, systolic, dyastolic):
@@ -120,7 +121,7 @@ def systolic(dataframe, systolic, dyastolic):
     return dataframe
 
 
-# In[21]:
+# In[5]:
 
 
 def dyastolic(dataframe, systolic, dyastolic): 
@@ -168,7 +169,7 @@ def dyastolic(dataframe, systolic, dyastolic):
     return dataframe
 
 
-# In[22]:
+# In[6]:
 
 
 def remove_zeros(dataframe, dyastolic):
@@ -198,7 +199,7 @@ def remove_zeros(dataframe, dyastolic):
     return dataframe
 
 
-# In[23]:
+# In[7]:
 
 
 def check_bp(dataframe, systolic, dyastolic):
@@ -228,7 +229,7 @@ def check_bp(dataframe, systolic, dyastolic):
     return dataframe
 
 
-# In[24]:
+# In[8]:
 
 
 def dyastolic_final(dataframe, dyastolic):
@@ -257,7 +258,7 @@ def dyastolic_final(dataframe, dyastolic):
 
 # ### 2.2 Age
 
-# In[25]:
+# In[9]:
 
 
 def correct_age(dataframe):
@@ -285,7 +286,7 @@ def correct_age(dataframe):
 
 # ### 2.3 Height
 
-# In[26]:
+# In[10]:
 
 
 def remove_outliers(dataframe, col, lo_lim, up_lim):
@@ -318,7 +319,7 @@ def remove_outliers(dataframe, col, lo_lim, up_lim):
 
 # ### 2.4 Weight
 
-# In[27]:
+# In[11]:
 
 
 def correct_weight(dataframe):
@@ -343,7 +344,7 @@ def correct_weight(dataframe):
 
 # ### 2.5 BMI
 
-# In[28]:
+# In[12]:
 
 
 def create_BMI(dataframe):
@@ -372,7 +373,7 @@ def create_BMI(dataframe):
 
 # ## 3.Function for scanning individual columns in a standardized way
 
-# In[29]:
+# In[13]:
 
 
 def exploracion(dataframe, col):
@@ -407,141 +408,141 @@ def exploracion(dataframe, col):
 
 # ### 4.1 Framingham
 
-# In[30]:
+# In[14]:
 
 
 #Framingham Risk Score for Women
 
 def framingham_women(row):
     """
-        Calcula el score de Framingham para mujeres
-        Devuelve el score como un entero
+        Calculate the Framingham score for women
+        Returns the score as an integer
     """
-    import random as rd
-    points=0
-    # Puntaje por edad
-    if  row['AgeinYr'] <=34: points -= 7
-    elif row['AgeinYr'] <=39: points -= 3
-    elif row['AgeinYr'] <=44: points -= 0
-    elif row['AgeinYr'] <=49: points += 3
-    elif row['AgeinYr'] <=54: points += 6
-    elif row['AgeinYr'] <=59: points +=8
-    elif row['AgeinYr'] <=64: points +=10
-    elif row['AgeinYr'] <=69: points +=12
-    elif row['AgeinYr'] <=74: points +=14
-    else: points +=16
     
-    # Puntaje por niveles de colesterol total y tabaquismo
-    if row['AgeinYr'] <=39:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,4]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 8
+    points = 0
+    # Score by Age
+    if row['AgeinYr'] <= 34: points -= 7
+    elif row['AgeinYr'] <= 39: points -= 3
+    elif row['AgeinYr'] <= 44: points -= 0
+    elif row['AgeinYr'] <= 49: points += 3
+    elif row['AgeinYr'] <= 54: points += 6
+    elif row['AgeinYr'] <= 59: points += 8
+    elif row['AgeinYr'] <= 64: points += 10
+    elif row['AgeinYr'] <= 69: points += 12
+    elif row['AgeinYr'] <= 74: points += 14
+    else: points += 16
+    
+    # Score by cholesterol and smoke 
+    if row['AgeinYr'] <= 39:
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,4]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 8
         else: points += rd.choice([11,13]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 9
-    elif row['AgeinYr'] <=49:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,3]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 6
+        if row['smoke'] == 'yes': points += 9
+    elif row['AgeinYr'] <= 49:
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,3]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 6
         else: points += rd.choice([8,10]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 7
-    elif row['AgeinYr'] <=59:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,2]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 4
+        if row['smoke'] == 'yes': points += 7
+    elif row['AgeinYr'] <= 59:
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,2]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 4
         else: points += rd.choice([5,7]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 4
-    elif row['AgeinYr'] <=69:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,1]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 2
+        if row['smoke'] == 'yes': points += 4
+    elif row['AgeinYr'] <= 69:
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,1]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 2
         else: points += rd.choice([3,4]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 2
+        if row['smoke'] =='yes': points += 2
     else:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,2]) # hay 2 subca tegorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 1
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,2]) # hay 2 subca tegorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 1
         else: points += 2
-        if row['smoke'] =='si': points += 1
+        if row['smoke'] == 'yes': points += 1
 
     # Puntaje según nivel de colesterol HDL
     #Hace un choices entre -1, 1 y 2 con los weights puestos segun active, bmi_cat y gluc
     prob_HDL = [0.33,0.34,0.33]
-    if row['bmi_cat']=='Obesidad' or row['bmi_cat']== 'Sobrepeso': 
+    if row['bmi_cat']== 'Obesity' or row['bmi_cat'] == 'Overweight': 
         prob_HDL[0] -= 0.15; prob_HDL[1] += 0.05; prob_HDL[2] += 0.10
-    if row['active']=='no': 
+    if row['active']== 'no': 
         prob_HDL[0] -= 0.10; prob_HDL[1] += 0.04; prob_HDL[2] += 0.06
     if row['gluc'] == 'diabetes': 
         prob_HDL[0] -= 0.08; prob_HDL[1] += 0.04; prob_HDL[2] += 0.04
     points += rd.choices([-1,1,2], weights=prob_HDL)[0]
 
-    # Puntaje por niveles de TAS
-    if row['TAS'] <= 120: points += rd.choice([0,1])    # Discrimina entre valores de TAS con y sin tratamiento
-    elif row['TAS'] <= 129: points += rd.choice([1,3])  # como no tenemos esa información se selecciona al azar
-    elif row['TAS'] <=139: points += rd.choice([2,4])
-    elif row['TAS'] <=159: points += rd.choice([3,5])
+    # Score by ap_hi
+    if row['ap_hi'] <= 120: points += rd.choice([0,1])    # Discrimina entre valores de TAS con y sin tratamiento
+    elif row['ap_hi'] <= 129: points += rd.choice([1,3])  # como no tenemos esa información se selecciona al azar
+    elif row['ap_hi'] <=139: points += rd.choice([2,4])
+    elif row['ap_hi'] <=159: points += rd.choice([3,5])
     else: points += rd.choice([4,6])
     
     return points
 
 
-# In[31]:
+# In[15]:
 
 
 #Framingham Risk Score for Men 
 def framingham_men(row):
     """
-        Calcula el score de Framingham para hombres
-        Devuelve el score como un entero
+        Calculate the Framingham score for men
+        Returns the score as an integer
     """
     import random as rd
-    points=0
-    # Puntaje por edad
-    if  row['AgeinYr'] <=34: points -= 9
-    elif row['AgeinYr'] <=39: points -= 4
-    elif row['AgeinYr'] <=44: points -= 0
-    elif row['AgeinYr'] <=49: points += 3
-    elif row['AgeinYr'] <=54: points += 6
-    elif row['AgeinYr'] <=59: points +=8
-    elif row['AgeinYr'] <=64: points +=10
-    elif row['AgeinYr'] <=69: points +=11
-    elif row['AgeinYr'] <=74: points +=12
-    else: points +=13
+    points = 0
+    # Score by Age
+    if  row['AgeinYr'] <= 34: points -= 9
+    elif row['AgeinYr'] <= 39: points -= 4
+    elif row['AgeinYr'] <= 44: points -= 0
+    elif row['AgeinYr'] <= 49: points += 3
+    elif row['AgeinYr'] <= 54: points += 6
+    elif row['AgeinYr'] <= 59: points += 8
+    elif row['AgeinYr'] <= 64: points += 10
+    elif row['AgeinYr'] <= 69: points += 11
+    elif row['AgeinYr'] <= 74: points += 12
+    else: points += 13
 
     # Puntaje por niveles de colesterol total y tabaquismo
-    if row['AgeinYr'] <=39:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,4]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 7
+    if row['AgeinYr'] <= 39:
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,4]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 7
         else: points += rd.choice([9,1]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 8
-    elif row['AgeinYr'] <=49:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,3]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 5
+        if row['smoke'] == 'yes': points += 8
+    elif row['AgeinYr'] <= 49:
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,3]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 5
         else: points += rd.choice([6,8]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 5
+        if row['smoke'] == 'yes': points += 5
     elif row['AgeinYr'] <=59:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,2]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 3
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,2]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 3
         else: points += rd.choice([4,5]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 3
-    elif row['AgeinYr'] <=69:
-        if row['cholesterol'] =='normal':  points += rd.choice([0,1]) # hay 2 subcategorias que no puedo definir 
-        if row['cholesterol'] =='limitrofe': points += 1
+        if row['smoke'] == 'yes': points += 3
+    elif row['AgeinYr'] <= 69:
+        if row['cholesterol'] == 'normal':  points += rd.choice([0,1]) # hay 2 subcategorias que no puedo definir 
+        if row['cholesterol'] == 'bordering': points += 1
         else: points += rd.choice([2,3]) # hay 2 subcategorias que no puedo definir 
-        if row['smoke'] =='si': points += 1
-    elif row['cholesterol'] =='alto': 
+        if row['smoke'] == 'yes': points += 1
+    elif row['cholesterol'] == 'high': 
         points += 1
-        if row['smoke'] =='si': points += 1
+        if row['smoke'] == 'yes': points += 1
 
     # Puntaje según nivel de colesterol HDL
     #Hace un choices entre -1, 1 y 2 con los weights puestos segun active, bmi_cat y gluc
     prob_HDL = [0.25,0.25,0.25,0.25]
-    if row['bmi_cat']=='Obesidad' or row['bmi_cat']== 'Sobrepeso': 
+    if row['bmi_cat'] == 'Obesity' or row['bmi_cat']== 'Overweight': 
         prob_HDL[0] -= 0.10;prob_HDL[1] -= 0.10; prob_HDL[2] += 0.1; prob_HDL[3] += 0.1
-    if row['active']=='no': 
+    if row['active']== 'no': 
         prob_HDL[0] -= 0.10;prob_HDL[1] -= 0.05; prob_HDL[2] += 0.05; prob_HDL[3] += 0.1
     if row['gluc'] == 'diabetes': 
         prob_HDL[0] -= 0.05;prob_HDL[1] -= 0.05; prob_HDL[2] += 0.05; prob_HDL[3] += 0.05
     points += rd.choices([-1,0,1,2], weights=prob_HDL)[0]
 
-    # Puntaje por niveles de TAS
-    if row['TAS'] <= 129: points += rd.choice([0,1])      # Discrimina entre valores de TAS con y sin tratamiento
-    elif row['TAS'] <=139: points += rd.choice([1,2])           # como no tenemos esa información se selecciona al azar
-    elif row['TAS'] <=159: points += rd.choice([1,2])
+    # Score by ap_hi
+    if row['ap_hi'] <= 129: points += rd.choice([0,1])      # Discrimina entre valores de TAS con y sin tratamiento
+    elif row['ap_hi'] <= 139: points += rd.choice([1,2])           # como no tenemos esa información se selecciona al azar
+    elif row['ap_hi'] <= 159: points += rd.choice([1,2])
     else: points += rd.choice([2,3])
     
     return points
@@ -549,7 +550,7 @@ def framingham_men(row):
 
 # ### 4.2 SCORE
 
-# In[32]:
+# In[16]:
 
 
 def create_table_ESC():
@@ -731,10 +732,10 @@ def create_table_ESC():
                       ]]
                   ]
                 ]
-    return  numpy.array(esc_table, dtype='object')
+    return  np.array(esc_table, dtype='object')
 
 
-# In[34]:
+# In[17]:
 
 
 def esc_score(row,table):
@@ -794,11 +795,11 @@ def esc_score(row,table):
         p3 = 5
         
     # Position for systolic blood pressure level   
-    if row['TAS'] >= 160: 
+    if row['ap_hi'] >= 160: 
         p4 = 0
-    elif row['TAS'] >= 140 and row['TAS'] <= 159: 
+    elif row['ap_hi'] >= 140 and row['ap_hi'] <= 159: 
         p4 = 1
-    elif row['TAS'] >= 120 and row['TAS'] <= 139: 
+    elif row['ap_hi'] >= 120 and row['ap_hi'] <= 139: 
         p4 = 2
     else: 
         p4 = 3
